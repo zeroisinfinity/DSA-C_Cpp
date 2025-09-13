@@ -32,6 +32,9 @@ NO SOLUTION POSSIBLE
 Enter your chessboard dimension: 8
 SOLUTION NUMBER - 1
 ```
+
+## 📷 Example Screenshot
+
 ![8-Queens Solution](./ss/8queens.png) <!-- You can save the screenshot as per your repo -->
 
 #### ASCII Board Example
@@ -172,8 +175,6 @@ Imagine trying keys on a lock:
 - If a key fits, you keep going!
 
 ---
-
-## 📷 Example Screenshots
 
 ### ❌ No Solution: 2x2 Board
 
