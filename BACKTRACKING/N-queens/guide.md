@@ -111,24 +111,44 @@ Level 0: Try Q at (0,0) (0,1) (0,2) (0,3)
 ## 📝 Sample Code (C, Simple)
 
 ```c
-bool is_safe(int* board, int row, int col, int n) {
-    for (int i = 0; i < row; i++) {
-        if (board[i] == col || abs(board[i] - col) == abs(i - row))
-            return false;
-    }
-    return true;
-}
+bool valid_move(int k_row , int l_col , int* soln){//b5
+    
+    for( int trav = 0 ; trav < k_row - 1 ; trav++){//b6
+          bool same_diagonals = abs((trav + 1) - k_row) == abs(soln[trav] - l_col);
+          bool same_col = (soln[trav] == l_col) ;
+          if( same_diagonals || same_col ){//b6
+              return false;
+          }//b6
+    }//b6
 
-bool solve_nqueens(int* board, int row, int n) {
-    if (row == n) return true;
-    for (int col = 0; col < n; col++) {
-        if (is_safe(board, row, col, n)) {
-            board[row] = col;
-            if (solve_nqueens(board, row + 1, n)) return true;
-        }
+    return true;
+    
+}//b5
+
+
+
+
+void place_queen(int dxd, int k_row , int* soln){//b1
+    
+    if(k_row > dxd){
+        display(soln, dxd);
+        printf("\n");
+        return;
     }
-    return false;
-}
+
+    
+    for(int trav = 0 ; trav < dxd ; trav++){//b2
+    
+          if( valid_move(k_row , trav + 1 , soln ) ){//b3
+                soln[k_row-1] = trav + 1;
+                place_queen(dxd , k_row + 1 , soln);
+          }//b3
+
+    }//b2
+    
+
+}//b1
+
 ```
 
 ---
