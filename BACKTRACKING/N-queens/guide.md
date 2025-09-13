@@ -32,7 +32,7 @@ NO SOLUTION POSSIBLE
 Enter your chessboard dimension: 8
 SOLUTION NUMBER - 1
 ```
-![8-Queens Solution](./screenshots/8queens_solution.png) <!-- You can save the screenshot as per your repo -->
+![8-Queens Solution](./ss/8queens.png) <!-- You can save the screenshot as per your repo -->
 
 #### ASCII Board Example
 
