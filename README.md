@@ -1,16 +1,17 @@
-# DSA-C_Cpp
+# DSA-C_Cpp 🚀
 
 This repository contains implementations of Data Structures and Algorithms (DSA) in the C programming language.
 
-## Table of Contents
+## 📑 Table of Contents
 
-- [Description](#description)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Folder Structure](#folder-structure)
-- [Contributing](#contributing)
+- [📝 Description](#-description)
+- [✨ Features](#-features)
+- [⚡ Getting Started](#-getting-started)
+- [📁 Folder Structure](#-folder-structure)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-## Description
+## 📝 Description
 
 A collection of classic and advanced data structure and algorithm implementations in C. Useful for learning, reference, and practice.
 
@@ -20,7 +21,7 @@ A collection of classic and advanced data structure and algorithm implementation
 - Core algorithms (sorting, searching, recursion, etc.)
 - Clean and well-documented C code
 
-## Getting Started
+## ⚡ Getting Started
 
 1. Clone the repository:
     ```sh
@@ -37,12 +38,14 @@ A collection of classic and advanced data structure and algorithm implementation
     ./output
     ```
 
-## Folder Structure
+## 📁 Folder Structure
 
 - Each directory contains well-separated code for different data structures and algorithms.
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for improvements or new algorithms.
 
+## 📄 License
 
+This project is licensed under the MIT License.
