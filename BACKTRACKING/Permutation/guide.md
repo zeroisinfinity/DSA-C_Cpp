@@ -24,12 +24,20 @@ The number of permutations of a set of 'n' distinct elements is **n!** (n-factor
 Backtracking is a general algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point in time.
 
 ```mermaid
-mindmap
-  root((Backtracking))
-    Permutations
-      Choose
-      Explore
-      Unchoose
+graph TD
+    A[Backtracking]
+    A --> B[Permutations]
+    B --> C[Choose]
+    B --> D[Explore]
+    B --> E[Unchoose]
+
+    %% Styling (black text everywhere)
+    classDef default fill:#FFFFFF,stroke:#000000,color:#000000
+    style A fill:#FFFFFF,stroke:#000000,color:#000000
+    style B fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style C fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style D fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style E fill:#E6E6FA,stroke:#9370DB,color:#000000
 ```
 
 For generating permutations, we can think of building a permutation step-by-step.

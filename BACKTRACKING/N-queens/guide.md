@@ -33,29 +33,44 @@ graph TD
     D --> D1["Main Diagonal: (0,0) (1,1) (2,2) (4,4) (5,5) (6,6) (7,7)"]
     D --> D2["Anti Diagonal: (0,6) (1,5) (2,4) (4,2) (5,1) (6,0)"]
     
-    classDef queen fill:#FFD700,color:#000000
-    classDef attack fill:#FF6B6B,color:#000000
+    classDef default fill:#FFFFFF,stroke:#000000,color:#000000
+    classDef queen fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#000000,font-weight:bold
+    classDef attack fill:#FFE4E1,stroke:#8B0000,stroke-width:1px,color:#000000
+    
     class A queen
+    class B,C,D fill:#E6E6FA,stroke:#9370DB,stroke-width:1px,color:#000000
     class B1,C1,D1,D2 attack
+    
+    style A text-align:center
+    style B text-align:center
+    style C text-align:center
+    style D text-align:center
+    style B1 text-align:left
+    style C1 text-align:left
+    style D1 text-align:left
+    style D2 text-align:left
 ```
 
 ### 🟩 2x2 Chessboard: Impossible!
 
 ```mermaid
-graph LR
-    A["2x2 Board Analysis"] --> B["Place Q at (0,0)"]
-    B --> C["Attacks: (0,1), (1,0), (1,1)"]
-    C --> D["All positions attacked!"]
-    D --> E["❌ NO SOLUTION"]
+graph TD
+    A[2x2 Board Analysis]
+    A --> B[Place Queen at Position 1]
+    B --> C[All other positions attacked]
+    C --> D[NO SOLUTION]
     
-    F["Place Q at (0,1)"] --> G["Attacks: (0,0), (1,0), (1,1)"]
-    G --> H["All positions attacked!"]
-    H --> I["❌ NO SOLUTION"]
+    A --> E[Place Queen at Position 2]
+    E --> F[All other positions attacked]
+    F --> G[NO SOLUTION]
     
-    A --> F
-    
-    classDef impossible fill:#FF6B6B,color:#000000
-    class E,I impossible
+    style A fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style B fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style E fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style C fill:#FFB6C1,stroke:#8B0000,color:#000000
+    style F fill:#FFB6C1,stroke:#8B0000,color:#000000
+    style D fill:#FF6B6B,stroke:#8B0000,color:#000000
+    style G fill:#FF6B6B,stroke:#8B0000,color:#000000
 ```
 
 > 🔴 **There are no ways to place 2 queens—try drawing it!**
@@ -93,16 +108,26 @@ Q  .  .  .  .  .  .  .
 ### 🧠 Core Backtracking Concept
 
 ```mermaid
-stateDiagram-v2
-    [*] --> PlaceQueen
-    PlaceQueen --> CheckSafety : Try position
-    CheckSafety --> PlaceQueen : Safe - Next row
-    CheckSafety --> TryNext : Not safe
-    TryNext --> CheckSafety : Try next column
-    TryNext --> Backtrack : No more columns
-    Backtrack --> PlaceQueen : Remove queen, go back
-    PlaceQueen --> Solution : All queens placed
-    Solution --> [*]
+graph TD
+    Start([Start]) --> PlaceQueen[Place Queen in row]
+    PlaceQueen --> CheckSafe{Is position safe?}
+    CheckSafe -->|Yes| NextRow[Move to next row]
+    CheckSafe -->|No| NextCol[Try next column]
+    
+    NextRow -->|Row < N| PlaceQueen
+    NextRow -->|Row = N| Solution[Found Solution!]
+    
+    NextCol -->|Column < N| PlaceQueen
+    NextCol -->|No more columns| Backtrack[Backtrack to previous row]
+    Backtrack --> PlaceQueen
+    
+    style Start fill:#4CAF50,stroke:#2E7D32,color:white
+    style PlaceQueen fill:#2196F3,stroke:#0D47A1,color:white
+    style CheckSafe fill:#FFC107,stroke:#FF6F00,color:black
+    style NextRow fill:#4CAF50,stroke:#2E7D32,color:white
+    style NextCol fill:#FF9800,stroke:#E65100,color:white
+    style Backtrack fill:#F44336,stroke:#B71C1C,color:white
+    style Solution fill:#9C27B0,stroke:#4A148C,color:white
 ```
 
 ### Step-by-step (in Simple Words):
@@ -343,7 +368,8 @@ bool valid_move(int k_row , int l_col , int* soln){//b5
 void place_queen(int dxd, int k_row , int* soln){//b1 
     if(k_row > dxd){
         display(soln, dxd);
-        printf("\n");
+        printf("
+");
         return;
     }
 
@@ -500,16 +526,17 @@ graph LR
 ## 🏁 Summary Table
 
 | Board Size | Number of Solutions |
-| 1          | 1                  |
-| 2          | 0                  |
-| 3          | 0                  |
-| 4          | 2                  |
-| 5          | 10                 |
-| 6          | 4                  |
-| 7          | 40                 |
-| 8          | 92                 |
-| 9          | 352                |
-| 10         | 724                |
+|------------|---------------------|
+| 1          | 1                   |
+| 2          | 0                   |
+| 3          | 0                   |
+| 4          | 2                   |
+| 5          | 10                  |
+| 6          | 4                   |
+| 7          | 40                  |
+| 8          | 92                  |
+| 9          | 352                 |
+| 10         | 724                 |
 
 ---
 
