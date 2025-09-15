@@ -18,12 +18,46 @@
 
 ## 🗺️ Visual Explanation
 
+### 🔍 Queen Attack Patterns
+
+Before diving into solutions, let's understand how queens attack:
+
+```mermaid
+graph TD
+    A["Queen at (3,3)"] --> B["Row Attacks"]
+    A --> C["Column Attacks"]
+    A --> D["Diagonal Attacks"]
+    
+    B --> B1["(3,0) (3,1) (3,2) (3,4) (3,5) (3,6) (3,7)"]
+    C --> C1["(0,3) (1,3) (2,3) (4,3) (5,3) (6,3) (7,3)"]
+    D --> D1["Main Diagonal: (0,0) (1,1) (2,2) (4,4) (5,5) (6,6) (7,7)"]
+    D --> D2["Anti Diagonal: (0,6) (1,5) (2,4) (4,2) (5,1) (6,0)"]
+    
+    classDef queen fill:#FFD700,color:#000000
+    classDef attack fill:#FF6B6B,color:#000000
+    class A queen
+    class B1,C1,D1,D2 attack
+```
+
 ### 🟩 2x2 Chessboard: Impossible!
 
+```mermaid
+graph LR
+    A["2x2 Board Analysis"] --> B["Place Q at (0,0)"]
+    B --> C["Attacks: (0,1), (1,0), (1,1)"]
+    C --> D["All positions attacked!"]
+    D --> E["❌ NO SOLUTION"]
+    
+    F["Place Q at (0,1)"] --> G["Attacks: (0,0), (1,0), (1,1)"]
+    G --> H["All positions attacked!"]
+    H --> I["❌ NO SOLUTION"]
+    
+    A --> F
+    
+    classDef impossible fill:#FF6B6B,color:#000000
+    class E,I impossible
 ```
-Enter your chessboard dimension: 2
-NO SOLUTION POSSIBLE
-```
+
 > 🔴 **There are no ways to place 2 queens—try drawing it!**
 
 ### 🟩 8x8 Chessboard: Possible!
@@ -56,6 +90,21 @@ Q  .  .  .  .  .  .  .
 
 ## 🔁 How Does the Algorithm Work? (Backtracking)
 
+### 🧠 Core Backtracking Concept
+
+```mermaid
+stateDiagram-v2
+    [*] --> PlaceQueen
+    PlaceQueen --> CheckSafety : Try position
+    CheckSafety --> PlaceQueen : Safe - Next row
+    CheckSafety --> TryNext : Not safe
+    TryNext --> CheckSafety : Try next column
+    TryNext --> Backtrack : No more columns
+    Backtrack --> PlaceQueen : Remove queen, go back
+    PlaceQueen --> Solution : All queens placed
+    Solution --> [*]
+```
+
 ### Step-by-step (in Simple Words):
 
 1. Start from the first row.
@@ -66,47 +115,213 @@ Q  .  .  .  .  .  .  .
 5. If you can't place a queen, **backtrack** (go up a row, move queen).
 6. Repeat until you finish the board or run out of options.
 
+### 🌳 Complete State-Space Tree for 4-Queens
+
+```mermaid
+graph TD
+    Root["Start: Empty 4x4 Board"] --> R0C0["Row 0, Col 0"]
+    Root --> R0C1["Row 0, Col 1"]
+    Root --> R0C2["Row 0, Col 2"]
+    Root --> R0C3["Row 0, Col 3"]
+    
+    R0C0 --> R1C0_X["❌ Row 1, Col 0"]
+    R0C0 --> R1C1_X["❌ Row 1, Col 1"]
+    R0C0 --> R1C2["✓ Row 1, Col 2"]
+    R0C0 --> R1C3_X["❌ Row 1, Col 3"]
+    
+    R1C2 --> R2C0_X["❌ Row 2, Col 0"]
+    R1C2 --> R2C1_X["❌ Row 2, Col 1"]
+    R1C2 --> R2C2_X["❌ Row 2, Col 2"]
+    R1C2 --> R2C3_X["❌ Row 2, Col 3"]
+    
+    R0C1 --> R1C0_1["❌ Row 1, Col 0"]
+    R0C1 --> R1C1_1["❌ Row 1, Col 1"]
+    R0C1 --> R1C2_1["❌ Row 1, Col 2"]
+    R0C1 --> R1C3_1["✓ Row 1, Col 3"]
+    
+    R1C3_1 --> R2C0_1["✓ Row 2, Col 0"]
+    R2C0_1 --> R3C0_1["❌ Row 3, Col 0"]
+    R2C0_1 --> R3C1_1["❌ Row 3, Col 1"]
+    R2C0_1 --> R3C2_1["✓ Row 3, Col 2"]
+    R2C0_1 --> R3C3_1["❌ Row 3, Col 3"]
+    
+    R3C2_1["🎉 SOLUTION 1: (0,1)(1,3)(2,0)(3,2)"]
+    
+    classDef solution fill:#90EE90,color:#000000
+    classDef invalid fill:#FF6B6B,color:#000000
+    classDef valid fill:#87CEEB,color:#000000
+    
+    class R3C2_1 solution
+    class R1C0_X,R1C1_X,R1C3_X,R2C0_X,R2C1_X,R2C2_X,R2C3_X,R1C0_1,R1C1_1,R1C2_1,R3C0_1,R3C1_1,R3C3_1 invalid
+    class R0C0,R0C1,R0C2,R0C3,R1C2,R1C3_1,R2C0_1 valid
+```
+
 ---
 
-## 🔗 Mermaid Flowchart
+## 🔗 Detailed Algorithm Flowchart
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> Row1[Try to place queen in row 1]
-    Row1 --> CheckSafe1{Is position safe?}
-    CheckSafe1 -- Yes --> Place1[Place queen, go to next row]
-    CheckSafe1 -- No --> NextCol1[Try next column]
-    Place1 --> Row2[Try to place queen in next row]
-    NextCol1 --> CheckSafe1
-    Row2 --> CheckSafe2{Is position safe?}
-    CheckSafe2 -- Yes --> Place2[Place queen, go to next row]
-    CheckSafe2 -- No --> NextCol2[Try next column]
-    Place2 --> EndRow[...continue for all rows...]
-    EndRow --> AllPlaced{All queens placed?}
-    AllPlaced -- Yes --> Solution[Found Solution! 🎉]
-    AllPlaced -- No --> Backtrack[Backtrack]
-    Backtrack --> Row2
+    Start(["Start N-Queens"]) --> Init["Initialize: row = 0, board = empty"]
+    Init --> CheckRow{"row >= N?"}
+    CheckRow -- Yes --> Solution["🎉 Solution Found!<br/>Print board"]
+    CheckRow -- No --> InitCol["col = 0"]
+    
+    InitCol --> CheckCol{"col < N?"}
+    CheckCol -- No --> Backtrack["❌ Backtrack<br/>Return false"]
+    CheckCol -- Yes --> SafeCheck["isSafe(row, col)?"]
+    
+    SafeCheck --> CheckConflicts{"Check conflicts"}
+    CheckConflicts --> RowCheck["Same row?"]
+    CheckConflicts --> ColCheck["Same column?"]
+    CheckConflicts --> DiagCheck["Same diagonal?"]
+    
+    RowCheck --> Conflict1{"Conflict?"}
+    ColCheck --> Conflict2{"Conflict?"}
+    DiagCheck --> Conflict3{"Conflict?"}
+    
+    Conflict1 -- Yes --> NextCol["col++"]
+    Conflict2 -- Yes --> NextCol
+    Conflict3 -- Yes --> NextCol
+    
+    Conflict1 -- No --> AllSafe{"All checks passed?"}
+    Conflict2 -- No --> AllSafe
+    Conflict3 -- No --> AllSafe
+    
+    AllSafe -- Yes --> PlaceQueen["Place queen at (row, col)"]
+    AllSafe -- No --> NextCol
+    
+    PlaceQueen --> Recurse["Solve(row + 1)"]
+    Recurse --> RecurseResult{"Recursive call successful?"}
+    
+    RecurseResult -- Yes --> Solution
+    RecurseResult -- No --> RemoveQueen["Remove queen from (row, col)"]
+    
+    RemoveQueen --> NextCol
+    NextCol --> CheckCol
+    
+    classDef start fill:#87CEEB,color:#000000
+    classDef success fill:#90EE90,color:#000000
+    classDef fail fill:#FF6B6B,color:#000000
+    classDef process fill:#DDA0DD,color:#000000
+    
+    class Start,Init start
+    class Solution success
+    class Backtrack fail
+    class PlaceQueen,RemoveQueen,Recurse process
+```
+
+### 🔄 Recursive Call Sequence for 4-Queens
+
+```mermaid
+sequenceDiagram
+    participant Main as Main Function
+    participant S0 as solveNQueens(0)
+    participant S1 as solveNQueens(1)
+    participant S2 as solveNQueens(2)
+    participant S3 as solveNQueens(3)
+    participant S4 as solveNQueens(4)
+    
+    Main->>S0: Start solving from row 0
+    activate S0
+    
+    Note over S0: Try queen at (0,1)
+    S0->>S1: Place at (0,1), solve row 1
+    activate S1
+    
+    Note over S1: Try queen at (1,3)
+    S1->>S2: Place at (1,3), solve row 2
+    activate S2
+    
+    Note over S2: Try queen at (2,0)
+    S2->>S3: Place at (2,0), solve row 3
+    activate S3
+    
+    Note over S3: Try queen at (3,2)
+    S3->>S4: Place at (3,2), solve row 4
+    activate S4
+    
+    Note over S4: row >= 4, solution found!
+    S4-->>S3: return true
+    deactivate S4
+    
+    S3-->>S2: return true
+    deactivate S3
+    
+    S2-->>S1: return true
+    deactivate S2
+    
+    S1-->>S0: return true
+    deactivate S1
+    
+    S0-->>Main: Solution: [(0,1), (1,3), (2,0), (3,2)]
+    deactivate S0
 ```
 
 ---
 
-## 🌳 Backtracking Tree (for 4-Queens)
+## 🎯 Step-by-Step Solution Timeline
 
+```mermaid
+graph LR
+    A["Start: Empty 4x4 board"] --> B["Try (0,0): Place queen"]
+    B --> C["Check (1,0): ❌ Same column"]
+    C --> D["Check (1,1): ❌ Same diagonal"]
+    D --> E["Check (1,2): ✓ Safe"]
+    E --> F["Place queen at (1,2)"]
+    F --> G["Check (2,0): ❌ Diagonal conflict"]
+    G --> H["Check (2,1): ❌ Diagonal conflict"]
+    H --> I["Check (2,2): ❌ Same column"]
+    I --> J["Check (2,3): ❌ Diagonal conflict"]
+    J --> K["❌ No valid position in row 2"]
+    K --> L["🔄 Backtrack: Remove (1,2)"]
+    L --> M["Try (1,3): ❌ Same row as (0,0)"]
+    M --> N["🔄 Backtrack: Remove (0,0)"]
+    N --> O["Try (0,1): Place queen"]
+    O --> P["Try (1,3): ✓ Safe"]
+    P --> Q["Try (2,0): ✓ Safe"]
+    Q --> R["Try (3,2): ✓ Safe"]
+    R --> S["🎉 Solution Found!<br/>[(0,1), (1,3), (2,0), (3,2)]"]
+    
+    classDef start fill:#87CEEB,color:#000000
+    classDef safe fill:#90EE90,color:#000000
+    classDef unsafe fill:#FF6B6B,color:#000000
+    classDef backtrack fill:#FFA500,color:#000000
+    classDef solution fill:#FFD700,color:#000000
+    
+    class A start
+    class E,F,O,P,Q,R safe
+    class C,D,G,H,I,J,M unsafe
+    class K,L,N backtrack
+    class S solution
 ```
-Level 0: Try Q at (0,0) (0,1) (0,2) (0,3)
- |
- |--(0,0)
- |   |--(1,0) X
- |   |--(1,1) X
- |   |--(1,2) ✓
- |        ...
- |--(0,1)
- |   |...
- |--(0,2)
- |   |...
- |--(0,3)
-     |...
-(X = not safe, ✓ = safe and continue)
+
+### 📋 Board State Visualization
+
+```mermaid
+graph TD
+    subgraph "Solution Board State"
+        A["Row 0: . Q . .<br/>Row 1: . . . Q<br/>Row 2: Q . . .<br/>Row 3: . . Q ."]
+    end
+    
+    subgraph "Conflict Analysis"
+        B["Queen at (0,1)"] --> B1["Controls: Row 0, Col 1, Diagonals"]
+        C["Queen at (1,3)"] --> C1["Controls: Row 1, Col 3, Diagonals"]
+        D["Queen at (2,0)"] --> D1["Controls: Row 2, Col 0, Diagonals"]
+        E["Queen at (3,2)"] --> E1["Controls: Row 3, Col 2, Diagonals"]
+    end
+    
+    subgraph "Safety Verification"
+        F["No two queens share:<br/>• Same row ✓<br/>• Same column ✓<br/>• Same diagonal ✓"]
+    end
+    
+    classDef board fill:#F0F8FF,color:#000000
+    classDef analysis fill:#E6E6FA,color:#000000
+    classDef verification fill:#90EE90,color:#000000
+    
+    class A board
+    class B1,C1,D1,E1 analysis
+    class F verification
 ```
 
 ---
@@ -165,13 +380,63 @@ Imagine trying keys on a lock:
 
 ---
 
+### 🔍 Constraint Satisfaction Analysis
+
+```mermaid
+graph TD
+    subgraph "Constraint Types"
+        A["Row Constraint"] --> A1["Each row must have exactly 1 queen"]
+        B["Column Constraint"] --> B1["Each column must have exactly 1 queen"]
+        C["Diagonal Constraint"] --> C1["Each diagonal can have at most 1 queen"]
+    end
+    
+    subgraph "Validation Process"
+        D["Place Queen at (r,c)"] --> E{"Check Row r"}
+        E -- "Already occupied" --> F["❌ Invalid"]
+        E -- "Free" --> G{"Check Column c"}
+        G -- "Already occupied" --> F
+        G -- "Free" --> H{"Check Main Diagonal"}
+        H -- "Already occupied" --> F
+        H -- "Free" --> I{"Check Anti Diagonal"}
+        I -- "Already occupied" --> F
+        I -- "Free" --> J["✓ Valid Placement"]
+    end
+    
+    classDef constraint fill:#E6E6FA,color:#000000
+    classDef process fill:#F0F8FF,color:#000000
+    classDef invalid fill:#FF6B6B,color:#000000
+    classDef valid fill:#90EE90,color:#000000
+    
+    class A1,B1,C1 constraint
+    class D,E,G,H,I process
+    class F invalid
+    class J valid
+```
+
 ### ❌ No Solution: 2x2 Board
 
-```
-NO SOLUTION POSSIBLE
+```mermaid
+graph LR
+    A["2x2 Board: Impossible"] --> B["Only 4 positions"]
+    B --> C["Each queen attacks 3 positions"]
+    C --> D["No safe placement for 2nd queen"]
+    D --> E["Mathematical proof: N=2,3 have 0 solutions"]
+    
+    classDef impossible fill:#FF6B6B,color:#000000
+    class A,E impossible
 ```
 
 ### ✅ Solution: 8x8 Board
+
+```mermaid
+graph TD
+    A["8x8 Board: 92 Total Solutions"] --> B["First Solution Found"]
+    B --> C["Queen positions:<br/>(0,5) (1,2) (2,6) (3,1)<br/>(4,7) (5,3) (6,0) (7,4)"]
+    C --> D["Verification: All constraints satisfied"]
+    
+    classDef solution fill:#90EE90,color:#000000
+    class A,B,C,D solution
+```
 
 ```
 SOLUTION NUMBER - 1
@@ -203,15 +468,48 @@ SOLUTION NUMBER - 1
 
 ---
 
+## 📊 Complexity Analysis Visualization
+
+```mermaid
+graph LR
+    subgraph "Time Complexity Growth"
+        A["N=1: 1 solution"] --> B["N=4: 2 solutions"]
+        B --> C["N=8: 92 solutions"]
+        C --> D["N=12: 14,200 solutions"]
+        D --> E["Growth Rate: O(N!)"]
+    end
+    
+    subgraph "Space Complexity"
+        F["Board Array: O(N)"] --> G["Recursion Stack: O(N)"]
+        G --> H["Total Space: O(N)"]
+    end
+    
+    subgraph "Optimization Techniques"
+        I["Early Pruning"] --> J["Constraint Propagation"]
+        J --> K["Symmetry Breaking"]
+        K --> L["Heuristic Ordering"]
+    end
+    
+    classDef complexity fill:#FFE4B5,color:#000000
+    classDef optimization fill:#E6E6FA,color:#000000
+    
+    class A,B,C,D,E,F,G,H complexity
+    class I,J,K,L optimization
+```
+
 ## 🏁 Summary Table
 
 | Board Size | Number of Solutions |
-|------------|--------------------|
 | 1          | 1                  |
 | 2          | 0                  |
 | 3          | 0                  |
 | 4          | 2                  |
+| 5          | 10                 |
+| 6          | 4                  |
+| 7          | 40                 |
 | 8          | 92                 |
+| 9          | 352                |
+| 10         | 724                |
 
 ---
 
