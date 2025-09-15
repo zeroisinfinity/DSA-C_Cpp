@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <math.h>
 #include <string.h>
-int* sol_no;
 const char *reset = "\x1b[0m";
 const char *white_bg_black_fg = "\x1b[47m\x1b[30m";
 const char *black_bg_white_fg = "\x1b[40m\x1b[37m";
@@ -51,17 +50,17 @@ bool valid_move(int k_row , int l_col , int* soln) {
     return true;
 }
 
-void place_queen(int dxd, int k_row, int* soln, int cellW, int cellH) {
+void place_queen(int dxd, int k_row, int* sol_no, int* soln, int cellW, int cellH) {
     if (k_row > dxd) {
-        printf("\x1b[1;30;102mSOLUTION NUMBER - %d\x1b[0m\n",(*sol_no)+1);
         (*sol_no)++;
+        printf("\x1b[1;30;102mSOLUTION NUMBER - %d\x1b[0m\n",*sol_no);
         display(soln, dxd, cellW, cellH);  // print board when solution complete
         return;
     }
     for (int trav = 0; trav < dxd; trav++) {
         if (valid_move(k_row, trav+1, soln)) {
             soln[k_row-1] = trav+1;
-            place_queen(dxd, k_row+1, soln, cellW, cellH);
+            place_queen(dxd, k_row+1, sol_no, soln, cellW, cellH);
         }
     }
 }
@@ -72,16 +71,15 @@ int main() {
     scanf("%d", &dxd);
 
     int *soln = calloc(dxd, sizeof(int));
-    sol_no = calloc(1, sizeof(int));
+    int sol_no = 0;
     if (!soln) exit(1);
-    if (!sol_no) exit(1);
 
-    place_queen(dxd, 1, soln, 6, 3);  // cell width=6, height=3
+    place_queen(dxd, 1, &sol_no, soln, 6, 3);  // cell width=6, height=3
     
-    if(!*sol_no) printf("\x1b[1;37;41mNO SOLUTION POSSIBLE\x1b[0m\n");
+    if(!sol_no) printf("\x1b[1;37;41mNO SOLUTION POSSIBLE\x1b[0m\n");
     
     free(soln);
-    free(sol_no);
+
     return 0;
 }
 

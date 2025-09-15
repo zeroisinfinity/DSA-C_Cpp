@@ -37,7 +37,8 @@ void display(char* ans){//b8
     }//b9
 }//b8
 
-void permtn(int slot , int* count , int cap , char* que , char* ans , bool* stat){//b4
+void permtn(int slot , int* count, int cap , char* que , char* ans , bool* stat){//b4
+      
       
       if(slot == cap){//b7
           ans[cap] = '\0';
@@ -52,9 +53,12 @@ void permtn(int slot , int* count , int cap , char* que , char* ans , bool* stat
       
       for(int iter = 0 ; iter < cap ; iter++){//b5
             if(!stat[iter]){//b6
+                if(slot > 0 && que[iter] - ans[slot-1] == 1){//b10
+                      continue;
+                }//b10
                     ans[slot] = que[iter];
                     stat[iter] = true;
-                    permtn(slot+1 , count , cap , que , ans , stat);
+                    permtn(slot+1 , count, cap , que , ans , stat);
                     stat[iter] = false;
           }//b6
       }//b5
