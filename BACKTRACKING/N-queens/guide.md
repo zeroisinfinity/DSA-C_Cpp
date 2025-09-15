@@ -24,53 +24,50 @@ Before diving into solutions, let's understand how queens attack:
 
 ```mermaid
 graph TD
-    A["Queen at (3,3)"] --> B["Row Attacks"]
-    A --> C["Column Attacks"]
-    A --> D["Diagonal Attacks"]
+    A["👑 Queen at (3,3)"] --> B["📏 Row Attacks"]
+    A --> C["📐 Column Attacks"]
+    A --> D["✖️ Diagonal Attacks"]
     
     B --> B1["(3,0) (3,1) (3,2) (3,4) (3,5) (3,6) (3,7)"]
     C --> C1["(0,3) (1,3) (2,3) (4,3) (5,3) (6,3) (7,3)"]
     D --> D1["Main Diagonal: (0,0) (1,1) (2,2) (4,4) (5,5) (6,6) (7,7)"]
     D --> D2["Anti Diagonal: (0,6) (1,5) (2,4) (4,2) (5,1) (6,0)"]
     
-    classDef default fill:#FFFFFF,stroke:#000000,color:#000000
     classDef queen fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#000000,font-weight:bold
-    classDef attack fill:#FFE4E1,stroke:#8B0000,stroke-width:1px,color:#000000
-    
+    classDef attack fill:#FF6B6B,stroke:#8B0000,stroke-width:1px,color:#000000,font-size:12px
     class A queen
-    class B,C,D fill:#E6E6FA,stroke:#9370DB,stroke-width:1px,color:#000000
     class B1,C1,D1,D2 attack
     
-    style A text-align:center
-    style B text-align:center
-    style C text-align:center
-    style D text-align:center
-    style B1 text-align:left
-    style C1 text-align:left
-    style D1 text-align:left
-    style D2 text-align:left
+    style A fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#000000,font-weight:bold
+    style B fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
+    style C fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
+    style D fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
 ```
 
 ### 🟩 2x2 Chessboard: Impossible!
 
 ```mermaid
 graph TD
-    A[2x2 Board Analysis]
-    A --> B[Place Queen at Position 1]
-    B --> C[All other positions attacked]
-    C --> D[NO SOLUTION]
+    A[2x2 Board Analysis] --> B[Place queen at 0-0]
+    B --> C[Attacked cells: 0-1 1-0 1-1]
+    C --> D[All cells attacked]
+    D --> E[NO SOLUTION]
     
-    A --> E[Place Queen at Position 2]
-    E --> F[All other positions attacked]
-    F --> G[NO SOLUTION]
+    A --> F[Place queen at 0-1]
+    F --> G[Attacked cells: 0-0 1-0 1-1]
+    G --> H[All cells attacked]
+    H --> I[NO SOLUTION]
     
+    classDef default fill:#FFFFFF,stroke:#000000,color:#000000
     style A fill:#E6E6FA,stroke:#9370DB,color:#000000
     style B fill:#E6E6FA,stroke:#9370DB,color:#000000
-    style E fill:#E6E6FA,stroke:#9370DB,color:#000000
-    style C fill:#FFB6C1,stroke:#8B0000,color:#000000
-    style F fill:#FFB6C1,stroke:#8B0000,color:#000000
-    style D fill:#FF6B6B,stroke:#8B0000,color:#000000
-    style G fill:#FF6B6B,stroke:#8B0000,color:#000000
+    style F fill:#E6E6FA,stroke:#9370DB,color:#000000
+    style C fill:#FFE4E1,stroke:#8B0000,color:#000000
+    style G fill:#FFE4E1,stroke:#8B0000,color:#000000
+    style D fill:#FFE4E1,stroke:#8B0000,color:#000000
+    style H fill:#FFE4E1,stroke:#8B0000,color:#000000
+    style E fill:#FF6B6B,stroke:#8B0000,color:#000000
+    style I fill:#FF6B6B,stroke:#8B0000,color:#000000
 ```
 
 > 🔴 **There are no ways to place 2 queens—try drawing it!**
@@ -368,8 +365,7 @@ bool valid_move(int k_row , int l_col , int* soln){//b5
 void place_queen(int dxd, int k_row , int* soln){//b1 
     if(k_row > dxd){
         display(soln, dxd);
-        printf("
-");
+        printf("\n");
         return;
     }
 
@@ -389,8 +385,8 @@ void place_queen(int dxd, int k_row , int* soln){//b1
 ## 📊 Time & Space Complexity
 
 | Algorithm    | Time Complexity | Space Complexity |
-|--------------|----------------|-----------------|
-| Backtracking | O(N!)          | O(N)            |
+|--------------|-----------------|------------------|
+| Backtracking | O(N!)           | O(N)             |
 
 - **Time:** Worst case, you try every possible placement (factorial growth).
 - **Space:** Just the board array (O(N)), plus recursion stack.
