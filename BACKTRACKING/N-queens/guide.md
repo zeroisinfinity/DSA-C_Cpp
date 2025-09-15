@@ -33,15 +33,16 @@ graph TD
     D --> D1["Main Diagonal: (0,0) (1,1) (2,2) (4,4) (5,5) (6,6) (7,7)"]
     D --> D2["Anti Diagonal: (0,6) (1,5) (2,4) (4,2) (5,1) (6,0)"]
     
+    classDef default color:#000000
     classDef queen fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#000000,font-weight:bold
     classDef attack fill:#FF6B6B,stroke:#8B0000,stroke-width:1px,color:#000000,font-size:12px
     class A queen
     class B1,C1,D1,D2 attack
     
     style A fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#000000,font-weight:bold
-    style B fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
-    style C fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
-    style D fill:#E6E6FA,stroke:#9370DB,stroke-width:1px
+    style B fill:#E6E6FA,stroke:#9370DB,stroke-width:1px,color:#000000
+    style C fill:#E6E6FA,stroke:#9370DB,stroke-width:1px,color:#000000
+    style D fill:#E6E6FA,stroke:#9370DB,stroke-width:1px,color:#000000
 ```
 
 ### 🟩 2x2 Chessboard: Impossible!
