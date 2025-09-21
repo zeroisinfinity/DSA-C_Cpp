@@ -3,10 +3,10 @@
 #include <algorithm>
 
 using namespace std;
-const int profit[13] = {0, 95, 88, 81, 70, 65, 63, 56, 45, 41, 35, 25, 15};
-const int weight[13] = {0, 23, 21, 20, 17, 16, 15, 14, 11, 10,  8,  6,  4};
-const int constraint = 50;
-const int pwsize = 13;
+const int profit[9]  = {0, 10, 30, 30, 35, 40, 40, 50, 60};
+const int weight[9]  = {0,  5,  5,  6,  2,  4,  7,  6,  9};
+const int constraint = 15;
+const int pwsize = 9;
 // Optimal set: Obj2 + Obj4 + Obj5 + Obj8 → weight = 4+3+2+5 = 14
 // Profit = 40 + 50 + 35 + 30 = 155
 
@@ -21,26 +21,6 @@ const int pwsize = 13;
 bool cmp(pair<int,int>& curr , pair<int,int>& next){//b12
 	return curr.first < next.first;
 }//b12
-
-/*
-void dominance(vector<pair<int,int>>& curr){//b3
-	
-	sort(curr.begin() , curr.end() , cmp);
-
-	for(auto it = curr.begin() ; it != curr.end() ; ++it){//b4
-		if(it != curr.begin()){//b5	
-			int prev_p = (it - 1) -> first;
-			int prev_w = (it - 1) -> second;
-
-			if( prev_p >= it -> first && prev_w <= it -> second ) it = curr.erase(it);
-			
-		}//b5
-		
-	}//b4
-
-}//b
-*/
-
 
 void dominance(vector<pair<int,int>>& curr){//b25
     // sort by weight ascending, profit descending
@@ -77,6 +57,7 @@ void fill(vector<pair<int,int>>& curr , vector<pair<int,int>>& prev , int ele , 
 	
 
 }//b14
+ 
 void display(vector<vector<pair<int,int>>>& vec,int* bit , int length = 4 , int opt = 0){//b10
 	if(!opt) {//b22
 	int i = 0;
@@ -97,18 +78,6 @@ void display(vector<vector<pair<int,int>>>& vec,int* bit , int length = 4 , int 
 		cout << "]"<<endl;
        }//b23
 }//b10
-/*
-void ans(vector<vector<pair<int,int>>>& soln , int* bit , int length){//b17
-	int i = length-1;
-	for(auto trav = soln.rbegin() ; trav!=soln.rend() - 1 ; ++trav){//b18
-		pair<int , int> target =  {trav -> rbegin() -> first , trav -> rbegin() -> second};
-		pair<int , int> arg = make_pair((trav+1) -> rbegin() -> first , (trav+1) -> rbegin() -> second);
-		if(arg == target) bit[i] = 0;
-		else bit[i] = 1;
-	}//b18
-}//b17
-*/
-
 
 void ans(vector<vector<pair<int,int>>>& soln , int* bit , int length , int i){//b17
 	pair <int,int> target = {soln[length].rbegin()->first, soln[length].rbegin()->second};
@@ -125,9 +94,8 @@ void ans(vector<vector<pair<int,int>>>& soln , int* bit , int length , int i){//
               if(exists) bit[j] = 0;
               else{//b21
                   bit[j] = 1;
-                  i = trav;
-                  int f = target.first - profit[i];
-                  int s = target.second - weight[i];
+                  int f = target.first - profit[trav];
+                  int s = target.second - weight[trav];
                   if(f < 0 || s < 0) target = {0,0};
                   else target = {f,s};
                   
