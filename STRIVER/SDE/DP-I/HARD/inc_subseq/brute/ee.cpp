@@ -4,7 +4,8 @@ using namespace std;
 class Solution {
 public:
     int rec(vector<int>& vec , int n , int i , int j){//b1
-        int best;      
+      int best;
+      while(i<n){//b20        
         if(j >= n ) {
             return vec[i];
         }
@@ -13,21 +14,20 @@ public:
             best = max(best,vec[i] + rec(vec,n,j,j+1));
             return best;
         }
+        i++;
+      }//b20
         return best;
     }//b1
     
     int maxSumIncreasingSubsequence(vector<int>& arr, int n){//b2
         // Your code goes here
-        int ans = INT_MIN;
-        for(int i = 0 ; i < n ; ++i)
-            ans = max(ans,rec(arr,n,i,i+1));
-        return ans;
+        return rec(arr,n,0,1);
     }//b2
 };
 
 int main(){//b4
         Solution soln;
-        vector<int> arr = {15,19,11,12,16,19,20};
+        vector<int> arr = {1,101,2,3,100};
         cout << soln.maxSumIncreasingSubsequence(arr,arr.size());
         return 0;
 }//b4
@@ -48,3 +48,4 @@ int main(){//b4
  i - 0 j - 4
 6
 */
+
