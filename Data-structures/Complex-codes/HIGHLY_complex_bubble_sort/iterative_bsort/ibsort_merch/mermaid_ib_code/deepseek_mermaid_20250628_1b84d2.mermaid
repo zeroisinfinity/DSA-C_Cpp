@@ -1,0 +1,21 @@
+flowchart TD
+    Start([Start bubblesort]) --> Init[Set trav and swap flag to INT_MAX]
+    Init --> Alloc[Allocate memory for bubble index]
+    Alloc --> OuterLoop{Phase < size - 1 AND swaps happened?}
+    
+    OuterLoop -- Yes --> ResetSwap[Set swap flag to 0]
+    ResetSwap --> InnerLoop{Bubble index in range?}
+    
+    InnerLoop -- Yes --> Compare{Current element > next?}
+    Compare -- Yes --> Swap[XOR swap and increment swap flag]
+    Compare -- No --> Skip[No swap, optionally decrement flag]
+    
+    Swap --> NextBubble[Move to next bubble index]
+    Skip --> NextBubble
+    NextBubble --> InnerLoop
+    
+    InnerLoop -- No --> NextPhase[Increment phase]
+    NextPhase --> OuterLoop
+    
+    OuterLoop -- No --> Cleanup[Free bubble pointer]
+    Cleanup --> ReturnArr[Return pointer to sorted array]
