@@ -34,7 +34,7 @@ class Solution{//b1
                         prev = curr;
 
                 }//b4
-                return max(prev[1][0],max(prev[1][1],prev[1][2]));
+                return prev[1][2]);
             }//b3
 };//b1
 

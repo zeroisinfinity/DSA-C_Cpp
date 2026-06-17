@@ -35,7 +35,7 @@ class Solution{//b1
                         }//b5
                     
                 }//b4
-                return max(tab[0][0] , tab[0][2]);
+                return tab[0][0];
             }//b3
 };//b1
 

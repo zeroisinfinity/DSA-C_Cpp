@@ -31,7 +31,7 @@ class Solution{//b1
                         }//b5
                     
                 }//b4
-                return max(tab[0][1][0] , max(tab[0][1][1] , tab[0][1][2]));
+                return tab[0][1][2]);
             }//b3
 };//b1
 
