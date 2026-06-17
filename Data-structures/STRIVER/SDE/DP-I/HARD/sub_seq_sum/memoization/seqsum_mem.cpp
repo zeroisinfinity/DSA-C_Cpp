@@ -24,12 +24,12 @@ class Solution{//b1
 
             bool seqsum(int i , int target){//b3
                 displayMem();
-                if(target == 0) return 1;
+                if(target == 0) return true;
                 if(i == 0) return (arr[0] == target);
                 if(mem[i][target] != -1) return mem[i][target];
                 
                 bool notake = seqsum(i - 1 , target);
-                bool take = 0;
+                bool take = false;
                 
                 if(target >= arr[i]) take = seqsum(i - 1 , target - arr[i]);
                 

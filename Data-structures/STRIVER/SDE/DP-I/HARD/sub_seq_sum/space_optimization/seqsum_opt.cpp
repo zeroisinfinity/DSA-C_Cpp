@@ -20,19 +20,21 @@ class Solution{//b1
                 arr = {2, 3, 1 , 1};
                 n = arr.size();
                 k = 4;      
-                prev = curr = vector<bool>(k+1,0);
+                prev = vector<bool>(k+1,0);
             }//b2
 
             bool seqsum(){//b3
                 prev[0] = true;
-                if(prev[arr[0]] <= k) prev[arr[0]] = true;
+                if(arr[0] <= k) prev[arr[0]] = true;
                 
                 for(int i = 1 ; i < n ; ++i){
+                    curr = vector<bool>(k + 1, false);
+                    curr[0] = true;
                     for(int target = 1 ; target <= k ; ++target){
                             displayOpt();
                             bool notake = prev[target];
                             bool take = false;
-                            if(take <= target) take = prev[target - arr[i]];
+                            if(arr[i] <= target) take = prev[target - arr[i]];
                             curr[target] = (take || notake);
                     }
                     prev = curr;
