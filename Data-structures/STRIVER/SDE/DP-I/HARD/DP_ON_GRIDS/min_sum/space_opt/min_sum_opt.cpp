@@ -33,7 +33,7 @@ class Solution{//b1
             double move(int i , int j ){//b3
                     //if(i == dest_r && j == dest_c) return 1;
                     for(int i = row - 1 ; i >= 0 ; --i){//b8
-                            curr = vector(row + 1 , pos_inf);
+                            curr = vector(col + 1 , pos_inf);
                             if(i == dest_r) curr[dest_c] = maze[dest_r][dest_c];
                             for(int j = col - 1 ; j >= 0 ; --j){//b9
                                 if(i == dest_r && j == dest_c){//b10
